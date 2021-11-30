@@ -1,0 +1,1585 @@
+openapi: 3.0.0
+info:
+  title: CadenceRT
+  description: You can obtain JWT token from login API
+  version: 0.1
+servers:
+  - url: http://localhost:3000/api
+    description: Local server for testing
+paths:
+  /login:
+    post:
+      summary: Login API
+      security: []   # No security
+      tags:
+        - Security
+      requestBody:
+        content:
+          application/json:
+            schema:      # Request body contents
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+              example:   # Sample object
+                username: admin
+                password: 62f264d7ad826f02a8af714c0a54b197935b717656b80461686d450f7b3abde4c553541515de2052b9af70f710f0cd8a1a2d3f4d60aa72608d71a63a9a93c0f5
+      responses:
+        '200':
+          description: OK
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+  /verifyToken:
+    post:
+      summary: Verify token API
+      security: [] #No security
+      tags:
+        - Security
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+  /changePassword:
+    post:
+      summary: Change password API
+      tags:
+        - Security
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                passwordNew:
+                  type: string
+                passwordOld:
+                  type: string
+      responses:
+        '200':
+          description: OK
+                
+
+  #-----  Collective  -----
+  /my/advanced/collectives/:
+    post:
+      summary: CRUD ACTION create
+      tags:
+        - Collective
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Collective"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _created:
+                  type: integer
+                _expiration:
+                  type: integer
+                _modified:
+                  type: integer
+                class:
+                  type: string
+                description:
+                  type: string
+                handle:
+                  type: string
+                locked:
+                  type: boolean
+                metadata:
+                  type: string
+                status:
+                  type: string
+                subclass:
+                  type: string
+                token:
+                  type: string
+    get:
+      summary: CRUD ACTION list
+      tags:
+        - Collective
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Collective"
+    
+  /my/advanced/collectives/{id}:
+    delete:
+      summary: CRUD ACTION delete
+      tags:
+        - Collective
+      parameters:
+        - name: id
+          in: path
+          description: Id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+    get:
+      summary: CRUD ACTION get
+      tags:
+        - Collective
+      parameters:
+        - name: id
+          in: path
+          description: Id resource
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Collective"
+    post:
+      summary: CRUD ACTION update
+      tags:
+        - Collective
+      parameters:
+        - name: id
+          in: path
+          description: Id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Collective"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Collective"
+    
+  /my/advanced/collectives/findByr_members/{key}:
+    get:
+      summary: CRUD ACTION findByr_members
+      tags:
+        - Collective
+      parameters:
+        - name: key
+          in: path
+          description: Id of model to search for
+          required: true
+          schema:
+            type: Objectid
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Collective"
+    
+  /my/advanced/collectives/findByr_owner/{key}:
+    get:
+      summary: CRUD ACTION findByr_owner
+      tags:
+        - Collective
+      parameters:
+        - name: key
+          in: path
+          description: Id of model to search for
+          required: true
+          schema:
+            type: Objectid
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Collective"
+    
+  #-----  Filesystem  -----
+  /my/filesystems/:
+    post:
+      summary: POST a new file - File contents in the body.
+      tags:
+        - Filesystem
+      parameters:
+        - name: obj
+          in: path
+          description: Object to insert
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Filesystem"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _created:
+                  type: integer
+                _modified:
+                  type: integer
+                _status:
+                  type: string
+                basepath:
+                  type: string
+                blob:
+                  type: number
+                filename:
+                  type: string
+                filesize:
+                  type: number
+                locked:
+                  type: string
+                mime:
+                  type: number
+                permission:
+                  type: integer
+                r_user:
+                  type: number
+    get:
+      summary: List all files
+      tags:
+        - Filesystem
+      parameters:
+        - name: t
+          in: path
+          description: Unused
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Filesystem"
+    
+  /my/filesystems/{id}:
+    delete:
+      summary: Delete a file. Admins only.
+      tags:
+        - Filesystem
+      parameters:
+        - name: id
+          in: path
+          description: Id Filesystem path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+    get:
+      summary: Download or receive a file from the database.
+      tags:
+        - Filesystem
+      parameters:
+        - name: id
+          in: path
+          description: The path to file
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Filesystem"
+    post:
+      summary: CRUD ACTION update
+      tags:
+        - Filesystem
+      parameters:
+        - name: id
+          in: path
+          description: Id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Filesystem"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Filesystem"
+    
+  /my/filesystems/findByfilename/{key}:
+    get:
+      summary: Search for a file by filename
+      tags:
+        - Filesystem
+      parameters:
+        - name: key
+          in: path
+          description: filename of the resource filename to search
+          required: true
+          schema:
+            type: string
+        - name: owner
+          in: path
+          description: the file owners reational Id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Filesystem"
+    
+  /my/filesystems/findByr_owner/{key}:
+    get:
+      summary: CRUD ACTION findByr_owner
+      tags:
+        - Filesystem
+      parameters:
+        - name: key
+          in: path
+          description: Id of model to search for
+          required: true
+          schema:
+            type: Objectid
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Filesystem"
+    
+  /my/filesystems/{id}/getr_owner:
+    get:
+      summary: List all the files belonging to a user.
+      tags:
+        - Filesystem
+      parameters:
+        - name: id
+          in: path
+          description: Id of the user
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+    
+  #-----  Geocode  -----
+  /my/geocode/:
+    post:
+      summary: create point set
+      tags:
+        - Geocode
+      parameters:
+        - name: class
+          in: path
+          description: 
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Geocode"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _created:
+                  type: integer
+                class:
+                  type: string
+                o:
+                  type: number
+                series:
+                  type: boolean
+                x:
+                  type: number
+                xy:
+                  type: number
+                y:
+                  type: number
+    get:
+      summary: CRUD ACTION list
+      tags:
+        - Geocode
+      parameters:
+        - name: class
+          in: path
+          description: 
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Geocode"
+    
+  /my/geocode/{id}:
+    delete:
+      summary: CRUD ACTION delete
+      tags:
+        - Geocode
+      parameters:
+        - name: id
+          in: path
+          description: Id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+    get:
+      summary: CRUD ACTION get
+      tags:
+        - Geocode
+      parameters:
+        - name: id
+          in: path
+          description: Id resource
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Geocode"
+    post:
+      summary: CRUD ACTION update
+      tags:
+        - Geocode
+      parameters:
+        - name: id
+          in: path
+          description: Id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Geocode"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Geocode"
+    
+  /my/geocode/findByclass/{key}:
+    get:
+      summary: CRUD ACTION findByclass
+      tags:
+        - Geocode
+      parameters:
+        - name: key
+          in: path
+          description: Id of the resource class to search
+          required: true
+          schema:
+            type: Objectid
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Geocode"
+    
+  /my/geocode/findByr_owner/{key}:
+    get:
+      summary: Search by findByr_owner
+      tags:
+        - Geocode
+      parameters:
+        - name: key
+          in: path
+          description: Id of the resource r_owner to search
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Geocode"
+    
+  #-----  Stakeholder  -----
+  /my/bidmanagement/:
+    post:
+      summary: CRUD ACTION create
+      tags:
+        - Stakeholder
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Stakeholder"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _created:
+                  type: integer
+                _expiration:
+                  type: integer
+                _modified:
+                  type: integer
+                description:
+                  type: string
+                handle:
+                  type: string
+                status:
+                  type: number
+    get:
+      summary: CRUD ACTION list
+      tags:
+        - Stakeholder
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Stakeholder"
+    
+  /my/bidmanagement/{id}:
+    delete:
+      summary: CRUD ACTION delete
+      tags:
+        - Stakeholder
+      parameters:
+        - name: id
+          in: path
+          description: Id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+    get:
+      summary: CRUD ACTION get
+      tags:
+        - Stakeholder
+      parameters:
+        - name: id
+          in: path
+          description: Id resource
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Stakeholder"
+    post:
+      summary: CRUD ACTION update
+      tags:
+        - Stakeholder
+      parameters:
+        - name: id
+          in: path
+          description: Id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Stakeholder"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Stakeholder"
+    
+  /my/bidmanagement/findByr_avatar/{key}:
+    get:
+      summary: CRUD ACTION findByr_avatar
+      tags:
+        - Stakeholder
+      parameters:
+        - name: key
+          in: path
+          description: Id of model to search for
+          required: true
+          schema:
+            type: Objectid
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Stakeholder"
+    
+  /my/bidmanagement/findByr_collective/{key}:
+    get:
+      summary: CRUD ACTION findByr_collective
+      tags:
+        - Stakeholder
+      parameters:
+        - name: key
+          in: path
+          description: Id of model to search for
+          required: true
+          schema:
+            type: Objectid
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Stakeholder"
+    
+  /my/bidmanagement/findByr_owner/{key}:
+    get:
+      summary: CRUD ACTION findByr_owner
+      tags:
+        - Stakeholder
+      parameters:
+        - name: key
+          in: path
+          description: Id of model to search for
+          required: true
+          schema:
+            type: Objectid
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Stakeholder"
+    
+  #-----  Treedata  -----
+  /my/advanced/treedata/join-to-node/{handle}:
+    patch:
+      summary: Add a new member to a tree node
+      tags:
+        - Treedata
+      parameters:
+        - name: class
+          in: path
+          description: Optional
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+    
+  /my/advanced/treedata/:
+    post:
+      summary: Create new tree structure
+      tags:
+        - Treedata
+      parameters:
+        - name: child
+          in: path
+          description: 
+          required: true
+          schema:
+            type: string
+        - name: class
+          in: path
+          description: Class
+          required: true
+          schema:
+            type: string
+        - name: description
+          in: path
+          description: 
+          required: true
+          schema:
+            type: string
+        - name: handle
+          in: path
+          description: 
+          required: true
+          schema:
+            type: string
+        - name: obj
+          in: path
+          description: Object to insert
+          required: true
+          schema:
+            type: number
+        - name: orphan
+          in: path
+          description: 
+          required: true
+          schema:
+            type: boolean
+        - name: parent
+          in: path
+          description: 
+          required: true
+          schema:
+            type: string
+        - name: subclass
+          in: path
+          description: 
+          required: true
+          schema:
+            type: string
+        - name: twin
+          in: path
+          description: 
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Treedata"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _created:
+                  type: integer
+                _modified:
+                  type: integer
+                class:
+                  type: string
+                description:
+                  type: string
+                handle:
+                  type: string
+                metadata:
+                  type: string
+                orphan:
+                  type: boolean
+                ref_inlaw:
+                  type: string
+                ref_last:
+                  type: string
+                ref_parent:
+                  type: string
+                ref_twin:
+                  type: string
+                status:
+                  type: boolean
+    get:
+      summary: CRUD ACTION list
+      tags:
+        - Treedata
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Treedata"
+    
+  /my/advanced/treedata/{id}:
+    delete:
+      summary: delete by name
+      tags:
+        - Treedata
+      parameters:
+        - name: id
+          in: path
+          description: Id Treedata
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+    get:
+      summary: Get by Id
+      tags:
+        - Treedata
+      parameters:
+        - name: id
+          in: path
+          description: Id Treedata
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Treedata"
+    post:
+      summary: CRUD ACTION update
+      tags:
+        - Treedata
+      parameters:
+        - name: id
+          in: path
+          description: Id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Treedata"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Treedata"
+    
+  /my/advanced/treedata/findByclass/{key}:
+    get:
+      summary: By Class
+      tags:
+        - Treedata
+      parameters:
+        - name: key
+          in: path
+          description: Id of the resource class to search
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Treedata"
+    
+  /my/advanced/treedata/findByref_inlaw/{key}:
+    get:
+      summary: Search findByref_inlaw
+      tags:
+        - Treedata
+      parameters:
+        - name: key
+          in: path
+          description: Id of the resource ref_inlaw to search
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Treedata"
+    
+  /my/advanced/treedata/findBys_lastchild/{key}:
+    get:
+      summary: CRUD ACTION findBys_lastchild
+      tags:
+        - Treedata
+      parameters:
+        - name: key
+          in: path
+          description: Id of model to search for
+          required: true
+          schema:
+            type: Objectid
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Treedata"
+    
+  /my/advanced/treedata/findBys_parent/{key}:
+    get:
+      summary: By parent
+      tags:
+        - Treedata
+      parameters:
+        - name: key
+          in: path
+          description: Id of the resource s_parent to search
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Treedata"
+    
+  /my/advanced/treedata/{id}/gets_parent:
+    get:
+      summary: gets_parent / members
+      tags:
+        - Treedata
+      parameters:
+        - name: id
+          in: path
+          description: ID of Treedata from s_parent
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+    
+  #-----  User  -----
+  /user/{id}/changePassword:
+    post:
+      summary: Change password of user from admin
+      tags:
+        - User
+      responses:
+        "200":
+          description: OK
+    
+  /user/:
+    post:
+      summary: CRUD ACTION create
+      tags:
+        - User
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _created:
+                  type: integer
+                _expires:
+                  type: integer
+                _lastactive:
+                  type: integer
+                address_1:
+                  type: string
+                address_2:
+                  type: string
+                address_3:
+                  type: string
+                address_city:
+                  type: string
+                address_country:
+                  type: string
+                address_postalcode:
+                  type: string
+                avatar:
+                  type: integer
+                id_number:
+                  type: string
+                locale:
+                  type: string
+                mail_primary:
+                  type: string
+                msisdn:
+                  type: string
+                name_first:
+                  type: string
+                name_last:
+                  type: string
+                name_title:
+                  type: string
+                nationality:
+                  type: string
+                opt_ins:
+                  type: string
+                opt_outs:
+                  type: string
+                password:
+                  type: string
+                r_group:
+                  type: integer
+                r_parent:
+                  type: integer
+                r_policy:
+                  type: integer
+                r_role:
+                  type: string
+                status:
+                  type: string
+                super_class:
+                  type: object
+                tax_number:
+                  type: string
+                username:
+                  type: string
+    get:
+      summary: CRUD ACTION list
+      tags:
+        - User
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+    
+  /user/{id}:
+    delete:
+      summary: CRUD ACTION delete
+      tags:
+        - User
+      parameters:
+        - name: id
+          in: path
+          description: Id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+    get:
+      summary: CRUD ACTION get
+      tags:
+        - User
+      parameters:
+        - name: id
+          in: path
+          description: Id resource
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+    post:
+      summary: CRUD ACTION update
+      tags:
+        - User
+      parameters:
+        - name: id
+          in: path
+          description: Id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+    
+    
+  #-----  User  -----
+  /Users/{id}/changePassword:
+    post:
+      summary: Change password by admin API
+      tags:
+        - User
+      parameters:
+        - name: id
+          in: path
+          description: Id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                passwordNew:
+                  type: string
+                passwordAdmin:
+                  type: string
+      responses:
+        '200':
+          description: OK
+  /Users/{id}:
+    post:
+      summary: Update User API
+      tags:
+        - User
+      parameters:
+        - name: id
+          in: path
+          description: Id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+    delete:
+      summary: Delete User API
+      tags:
+        - User
+      parameters:
+        - name: id
+          in: path
+          description: Id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+  /Users:
+    post:
+      summary: Create User API
+      tags:
+        - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: 'string'
+                password: 
+                  type: 'string'
+                mail: 
+                  type: 'string'
+                name: 
+                  type: 'string'
+                surname: 
+                  type: 'string'
+                roles: 
+                  type: array
+                  items:
+                    type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+    
+# JWT security
+security:
+  - bearerAuth: [] 
+  
+  
+# Components
+components:
+
+  # Security
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT    # optional, arbitrary value for documentation purposes
+
+  # Data Model
+  schemas:
+    User:
+      properties:
+        username:
+          type: 'string'
+        password: 
+          type: 'string'
+        mail: 
+          type: 'string'
+        name: 
+          type: 'string'
+        surname: 
+          type: 'string'
+        roles: 
+          type: array
+          items:
+            type: string
+      required:
+        - username
+        - password
+        
+
+    Collective:
+      properties:
+        _id:
+          type: string
+        _created:
+          type: integer
+        _expiration:
+          type: integer
+        _modified:
+          type: integer
+        class:
+          type: string
+        description:
+          type: string
+        handle:
+          type: string
+        locked:
+          type: boolean
+        metadata:
+          type: string
+        status:
+          type: string
+        subclass:
+          type: string
+        token:
+          type: string
+      required:
+        -  _id
+        - _created
+        - _modified
+        - class
+        - handle
+        - locked
+        - status
+      
+    
+    Filesystem:
+      properties:
+        _id:
+          type: string
+        _created:
+          type: integer
+        _modified:
+          type: integer
+        _status:
+          type: string
+        basepath:
+          type: string
+        blob:
+          type: number
+        filename:
+          type: string
+        filesize:
+          type: number
+        locked:
+          type: string
+        mime:
+          type: number
+        permission:
+          type: integer
+        r_user:
+          type: number
+      required:
+        -  _id
+        - _created
+        - _status
+        - basepath
+        - filename
+        - locked
+        - permission
+      
+    
+    Geocode:
+      properties:
+        _id:
+          type: string
+        _created:
+          type: integer
+        class:
+          type: string
+        o:
+          type: number
+        series:
+          type: boolean
+        x:
+          type: number
+        xy:
+          type: number
+        y:
+          type: number
+      required:
+        -  _id
+        - _created
+        - class
+        - series
+        - x
+        - y
+      
+    
+    Stakeholder:
+      properties:
+        _id:
+          type: string
+        _created:
+          type: integer
+        _expiration:
+          type: integer
+        _modified:
+          type: integer
+        description:
+          type: string
+        handle:
+          type: string
+        status:
+          type: number
+      required:
+        -  _id
+        - _created
+        - handle
+        - status
+      
+    
+    Treedata:
+      properties:
+        _id:
+          type: string
+        _created:
+          type: integer
+        _modified:
+          type: integer
+        class:
+          type: string
+        description:
+          type: string
+        handle:
+          type: string
+        metadata:
+          type: string
+        orphan:
+          type: boolean
+        ref_inlaw:
+          type: string
+        ref_last:
+          type: string
+        ref_parent:
+          type: string
+        ref_twin:
+          type: string
+        status:
+          type: boolean
+      required:
+        -  _id
+        - class
+        - handle
+      
+    
+    User:
+      properties:
+        _id:
+          type: string
+        _created:
+          type: integer
+        _expires:
+          type: integer
+        _lastactive:
+          type: integer
+        address_1:
+          type: string
+        address_2:
+          type: string
+        address_3:
+          type: string
+        address_city:
+          type: string
+        address_country:
+          type: string
+        address_postalcode:
+          type: string
+        avatar:
+          type: integer
+        id_number:
+          type: string
+        locale:
+          type: string
+        mail_primary:
+          type: string
+        msisdn:
+          type: string
+        name_first:
+          type: string
+        name_last:
+          type: string
+        name_title:
+          type: string
+        nationality:
+          type: string
+        opt_ins:
+          type: string
+        opt_outs:
+          type: string
+        password:
+          type: string
+        r_group:
+          type: integer
+        r_parent:
+          type: integer
+        r_policy:
+          type: integer
+        r_role:
+          type: string
+        status:
+          type: string
+        super_class:
+          type: object
+        tax_number:
+          type: string
+        username:
+          type: string
+      required:
+        -  _id
+        - mail_primary
+        - msisdn
+        - password
+        - r_role
+        - status
+        - super_class
+        - username
+      
+    
