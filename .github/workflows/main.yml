@@ -28,21 +28,20 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: echo Hello, world!
+        run: echo Hello
         
       - name: Cache
         uses: actions/cache@v2.1.7
-          with:
-            # A list of files, directories, and wildcard patterns to cache and restore
-            - path: client/node_modules
-            - path: server/node_modules
-            - path: node_modules
-            # An explicit key for restoring and saving the cache
-              key: heloolodjjsjfmsjhmjkdjkhcjblk
-            # An ordered list of keys to use for restoring the cache if no cache hit occurred for key
-              restore-keys: # optional
-            # The chunk size used to split up large files during upload, in bytes
-              upload-chunk-size: # optional
+        with:
+          # A list of files, directories, and wildcard patterns to cache and restore
+          path: client/node_modules server/node_modules *node_modules*
+
+          # An explicit key for restoring and saving the cache
+          key: heloolodjjsjfmsjhmjkdjkhcjblk
+          # An ordered list of keys to use for restoring the cache if no cache hit occurred for key
+          # restore-keys: # optional
+          # The chunk size used to split up large files during upload, in bytes
+          # upload-chunk-size: # optional
 
       # Runs a single command using the runners shell
       - name: npm
